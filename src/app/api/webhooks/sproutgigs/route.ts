@@ -42,14 +42,22 @@ export async function POST(req: NextRequest) {
 
   for (const item of items) {
     const sgJobId = String(item.job_id || "");
+    console.log("SPROUTGIGS DEBUG sgJobId:", sgJobId);
     if (!sgJobId) continue;
     const { rows } = await pool.query("SELECT id FROM campaigns WHERE sg_job_id = $1", [sgJobId]);
+    console.log("SPROUTGIGS DEBUG campaign rows:", rows);
     if (!rows.length) continue;
     const campaignId = rows[0].id;
 
     if (eventType === "tasks_submitted") {
       for (const taskId of Array.isArray(item.task_ids) ? item.task_ids : []) {
         const externalId = `task:${taskId}`;
+        console.log(
+  "SPROUTGIGS DEBUG task:",
+  taskId,
+  "campaign:",
+  campaignId
+);
         if (!(await receipt(externalId, { eventType, eventDate, item, taskId }))) continue;
         await pool.query(
           `INSERT INTO events (campaign_id, type, external_id, meta) VALUES ($1,'worker_submitted',$2,$3)`,
