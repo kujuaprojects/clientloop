@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   for (const item of items) {
     console.log("SPROUTGIGS DEBUG raw item:", JSON.stringify(item));
 console.log("SPROUTGIGS DEBUG item keys:", Object.keys(item));
-    const sgJobId = String(item.job_id || "");
+    const sgJobId = String(item["sg_job_id"] ?? "").trim();
     console.log("SPROUTGIGS DEBUG sgJobId:", sgJobId);
     if (!sgJobId) continue;
     const { rows } = await pool.query("SELECT id FROM campaigns WHERE sg_job_id = $1", [sgJobId]);
