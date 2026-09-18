@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: clientloop
+    runtime: node
+    plan: starter
+
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+
+      - key: DATABASE_URL
+        sync: false
+
+      - key: APP_URL
+        sync: false
+
+      - key: DASHBOARD_USER
+        value: keith
+
+      - key: DASHBOARD_PASSWORD
+        sync: false
+
+      - key: BOOKING_URL
+        value: https://calendly.com/keithmuoki
+
+      - key: BOOKING_WEBHOOK_SECRET
+        sync: false
+
+      - key: SPROUTGIGS_USER_ID
+        sync: false
+
+      - key: SPROUTGIGS_SECRET_KEY
+        sync: false
+
+      - key: SPROUTGIGS_CATEGORY_ID
+        sync: false
+
+      - key: SPROUTGIGS_ZONE_ID
+        value: int
+
+      - key: SPROUTGIGS_WEBHOOK_SECRET
+        sync: false
+
+      - key: REDDIT_CLIENT_ID
+        sync: false
+
+      - key: REDDIT_CLIENT_SECRET
+        sync: false
