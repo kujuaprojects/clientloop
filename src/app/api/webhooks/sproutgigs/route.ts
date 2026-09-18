@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
   const items = Array.isArray(payload.event) ? payload.event : [];
 
   for (const item of items) {
+    console.log("SPROUTGIGS DEBUG raw item:", JSON.stringify(item));
+console.log("SPROUTGIGS DEBUG item keys:", Object.keys(item));
     const sgJobId = String(item.job_id || "");
     console.log("SPROUTGIGS DEBUG sgJobId:", sgJobId);
     if (!sgJobId) continue;
