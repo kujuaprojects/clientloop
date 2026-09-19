@@ -47,12 +47,26 @@ export default async function RadarPage() {
             {posts.map((p, i) => (
               <tr key={i} className="border-t border-zinc-100 transition-colors hover:bg-zinc-50/60">
                 <td className="max-w-md px-6 py-4">
-                  <a href={p.url} target="_blank" rel="noreferrer" className="group flex items-start gap-2">
-                    <span className="font-medium leading-6 text-zinc-900 group-hover:text-brand-700">
-                      {p.title}
-                    </span>
-                    <ExternalLink size={13} className="mt-1.5 shrink-0 text-zinc-300 group-hover:text-brand-500" />
-                  </a>
+                  {p.url && p.url !== "#" ? (
+  <a
+    href={p.url}
+    target="_blank"
+    rel="noreferrer"
+    className="group flex items-start gap-2"
+  >
+    <span className="font-medium leading-6 text-zinc-900 group-hover:text-brand-700">
+      {p.title}
+    </span>
+    <ExternalLink
+      size={13}
+      className="mt-1.5 shrink-0 text-zinc-300 group-hover:text-brand-500"
+    />
+  </a>
+) : (
+  <span className="font-medium leading-6 text-zinc-900">
+    {p.title}
+  </span>
+)}
                   <span className="text-xs text-zinc-400">r/{p.subreddit}</span>
                 </td>
                 <td className="px-6 py-4">
