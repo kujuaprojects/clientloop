@@ -27,7 +27,7 @@ export default async function Overview() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Tracked spend" value={stats.spent} money hint={`${stats.campaigns} active / completed campaigns`} />
+        <StatCard label="Tracked spend" value={stats.spent} money hint={`${stats.campaigns} tracked campaigns`}
         <StatCard label="Revenue attributed" value={stats.revenue} money hint={stats.roas != null ? `${stats.roas.toFixed(2)}× return on spend` : "waiting for revenue events"} />
         <StatCard label="Clients won" value={stats.clients} accent hint={`${stats.attended} calls attended`} />
         <StatCard label="Client acquisition cost" value={stats.cac} money hint={`${stats.bookings} calls booked`} />
