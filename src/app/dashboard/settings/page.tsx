@@ -14,7 +14,12 @@ export default function SettingsPage() {
     <div className="max-w-3xl space-y-6">
       <div><h1 className="text-2xl font-semibold tracking-tight">Settings</h1><p className="mt-1 text-sm text-zinc-500">Connection and attribution status.</p></div>
       <div className="divide-y divide-zinc-100 rounded-xl border border-zinc-200 bg-white shadow-card">
-        <Row label="SproutGigs API" ok={sproutgigsConfigured()} detail="Creates and synchronizes micro-job campaigns." />
+        <Row label="SproutGigs API" ok={sproutgigsConfigured()} detail="API credentials configured for future campaign submission" />
+        <Row
+  label="Campaign mode"
+  ok={true}
+  detail="Prepared only — SproutGigs submission and spending are disabled"
+/>
         <Row label="Reddit API" ok={redditConfigured()} detail="Powers the trend radar. Demo data is used without keys." />
         <Row label="Booking destination" ok={Boolean(process.env.BOOKING_URL)} detail={`Currently: ${process.env.BOOKING_URL || "not set"}`} />
         <Row label="Database" ok={Boolean(process.env.DATABASE_URL)} detail="Stores the campaign + event attribution ledger." />
