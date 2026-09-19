@@ -17,7 +17,9 @@ export default async function CampaignsPage() {
           <tbody>{campaigns.map((c) => <tr key={c.id} className="border-t border-zinc-100 hover:bg-zinc-50/60">
             <td className="px-6 py-4"><p className="font-medium text-zinc-900">{c.title}</p><p className="text-xs text-zinc-400">r/{c.subreddit} · {c.style}</p></td>
             <td className="px-6 py-4"><Badge status={c.status} /></td>
-            <td className="px-6 py-4 text-right tabular-nums">{usd(c.spend)}</td>
+            <td className="px-6 py-4 text-right tabular-nums">
+  {usd(c.status === "prepared" ? 0 : c.spend)}
+</td>
             <td className="px-6 py-4 text-right tabular-nums">{fmt(c.visits)}</td>
             <td className="px-6 py-4 text-right tabular-nums">{fmt(c.leads)}</td>
             <td className="px-6 py-4 text-right tabular-nums">{c.bookings}</td>
