@@ -63,9 +63,12 @@ export default async function RadarPage() {
     />
   </a>
 ) : (
-  <span className="font-medium leading-6 text-zinc-900">
-    {p.title}
-  </span>
+  <Link
+  href={`/dashboard/launch?title=${encodeURIComponent(p.title)}&subreddit=${encodeURIComponent(p.subreddit)}&style=${encodeURIComponent(p.style)}`}
+  className="font-medium leading-6 text-zinc-900 hover:text-brand-700"
+>
+  {p.title}
+</Link>
 )}
                   <span className="text-xs text-zinc-400">r/{p.subreddit}</span>
                 </td>

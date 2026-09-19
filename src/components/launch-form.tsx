@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Rocket, CheckCircle2, Loader2, Link2, BarChart3 } from "lucide-react";
 import { fmt, usd } from "@/lib/utils";
 
@@ -12,9 +13,18 @@ const SUBS = [
 ];
 
 export default function LaunchForm({ bookingUrl }: { bookingUrl: string }) {
-  const [title, setTitle] = useState("");
-  const [sub, setSub] = useState(SUBS[0]);
-  const [style, setStyle] = useState(0);
+  const searchParams = useSearchParams();
+  const [title, setTitle] = useState(searchParams.get("title") || "");
+  const initialSub =
+  SUBS.find((s) => s.name === searchParams.get("subreddit")) || SUBS[0];
+
+const [sub, setSub] = useState(initialSub);
+  const initialStyle = Math.max(
+  0,
+  STYLES.findIndex((s) => s === searchParams.get("style"))
+);
+
+const [style, setStyle] = useState(initialStyle);
   const [budget, setBudget] = useState(40);
   const [pay, setPay] = useState(0.15);
   const [redditPostUrl, setRedditPostUrl] = useState("");
