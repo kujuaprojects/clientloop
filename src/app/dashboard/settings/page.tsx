@@ -35,7 +35,7 @@ export default function SettingsPage() {
 
       <div className="rounded-xl border border-emerald-100 bg-emerald-50/60 p-5 text-sm leading-6 text-zinc-600">
         <p className="font-semibold text-zinc-900">Booking, attendance, clients and revenue</p>
-        <p className="mt-1">Your CRM / booking automation should POST to <code className="rounded bg-white px-1.5 py-0.5 font-mono text-xs">/api/webhooks/booking</code> with the same campaign ref. Supported event types: <b>booking</b>, <b>attended</b>, <b>client_won</b>, and <b>revenue</b>. Revenue events include <code className="font-mono text-xs">amount</code> and <code className="font-mono text-xs">currency</code>.</p>
+        <p className="mt-1">Your CRM / booking automation should POST to <code className="rounded bg-white px-1.5 py-0.5 font-mono text-xs">/api/webhooks/booking</code> with the same campaign ref. Supported event types: booking, attended, booking_cancelled, client_won, and revenue. Revenue events include <code className="font-mono text-xs">amount</code> and <code className="font-mono text-xs">currency</code>.</p>
       </div>
     </div>
   );
