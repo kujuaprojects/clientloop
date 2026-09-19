@@ -36,8 +36,8 @@ export async function POST(req: NextRequest) {
   const refPrefix = subreddit.replace(/[^a-z0-9]/gi, "").slice(0, 12).toLowerCase() || "campaign";
   const origin = process.env.APP_URL || req.nextUrl.origin;
   const trackedUrl = `${origin.replace(/\/$/, "")}/r/${trackingToken}`;
-
-  const job = await postJob({
+const dryRun = true;
+  const job = dryRun ? null : await postJob({
     title: String(title).slice(0, 120),
     instructions:
       `Open the campaign page below and complete only the action described on that page. ` +
@@ -49,7 +49,11 @@ export async function POST(req: NextRequest) {
   });
 
   const sgJobId = job?.job_id ?? null;
-  const status = sproutgigsConfigured() ? "pending_review" : "demo";
+  const status = dryRun
+  ? "prepared"
+  : sproutgigsConfigured()
+    ? "pending_review"
+    : "demo";
 
   const { rows } = await pool.query(
     `INSERT INTO campaigns
