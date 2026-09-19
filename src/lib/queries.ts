@@ -72,7 +72,16 @@ export async function listCampaigns(): Promise<Campaign[]> {
 export async function getOverviewStats() {
   const { rows } = await pool.query(`
     SELECT
-      COALESCE(SUM(CASE WHEN actual_spend > 0 THEN actual_spend ELSE budget END), 0)::numeric AS spent,
+      COALESCE(
+  SUM(
+    CASE
+      WHEN status = 'prepared' THEN 0
+      WHEN actual_spend > 0 THEN actual_spend
+      ELSE budget
+    END
+  ),
+  0
+)::numeric AS spent,
       COUNT(*) FILTER (WHERE status != 'draft')::int AS campaigns
     FROM campaigns
   `);
