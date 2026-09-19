@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
-import { getTrendingPosts } from "@/lib/reddit";
+import { getTrendingPosts, redditConfigured } from "@/lib/reddit";
 import { fmt } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -15,6 +15,7 @@ const STYLE_BADGE: Record<string, string> = {
 
 export default async function RadarPage() {
   const posts = await getTrendingPosts();
+  const isLive = redditConfigured();
 
   return (
     <div className="space-y-6">
@@ -27,7 +28,7 @@ export default async function RadarPage() {
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-          Live from Reddit
+          {isLive ? "Live from Reddit" : "Demo data"}
         </span>
       </div>
 
