@@ -64,15 +64,15 @@ const [style, setStyle] = useState(initialStyle);
     return (
       <div className="flex flex-col items-center rounded-xl border border-emerald-200 bg-emerald-50/60 px-6 py-14 text-center">
         <CheckCircle2 size={40} className="text-emerald-600" />
-        <h2 className="mt-4 text-xl font-semibold tracking-tight">Campaign launched</h2>
+        <h2 className="mt-4 text-xl font-semibold tracking-tight">Campaign prepared</h2>
         <p className="mt-2 max-w-lg text-sm leading-6 text-zinc-600">
-          ClientLoop created a unique first-party tracking route. Every real visitor who passes through it is recorded before being forwarded to your booking page.
+          ClientLoop created the campaign and its unique first-party tracking route. The campaign is prepared but has not been submitted to SproutGigs, so no money has been spent.
         </p>
         <div className="mt-4 max-w-xl break-all rounded-lg border border-emerald-200 bg-white px-3 py-2 font-mono text-xs text-zinc-600">
           {done.trackedUrl}
         </div>
         <button onClick={() => setDone(null)} className="mt-6 rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50">
-          Launch another
+          Prepare another
         </button>
       </div>
     );
