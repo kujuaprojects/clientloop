@@ -14,10 +14,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "ref and a supported tracking type are required" }, { status: 400 });
   }
 
-  const { rows } = await pool.query(
-    "SELECT id FROM campaigns WHERE tracking_token = $1 LIMIT 1",
-    [ref]
-  );
+  console.log("TRACK DEBUG ref:", JSON.stringify(ref));
+
+const { rows } = await pool.query(
+  "SELECT id FROM campaigns WHERE tracking_token = $1 LIMIT 1",
+  [ref]
+);
+
+console.log("TRACK DEBUG rows:", rows);
   if (!rows.length) return NextResponse.json({ error: "Unknown campaign" }, { status: 404 });
 
   const externalId = body.externalId ? String(body.externalId) : null;
