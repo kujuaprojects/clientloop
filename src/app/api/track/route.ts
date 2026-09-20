@@ -22,6 +22,16 @@ const { rows } = await pool.query(
 );
 
 console.log("TRACK DEBUG rows:", rows);
+const debugCampaigns = await pool.query(
+  `
+  SELECT id, tracking_token, status
+  FROM campaigns
+  ORDER BY created_at DESC
+  LIMIT 5
+  `
+);
+
+console.log("TRACK DEBUG recent campaigns:", debugCampaigns.rows);
   if (!rows.length) return NextResponse.json({ error: "Unknown campaign" }, { status: 404 });
 
   const externalId = body.externalId ? String(body.externalId) : null;
