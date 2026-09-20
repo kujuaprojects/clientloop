@@ -22,6 +22,27 @@ const { rows } = await pool.query(
 );
 
 console.log("TRACK DEBUG rows:", rows);
+console.log(
+  "TRACK DEBUG ref bytes:",
+  Buffer.from(ref, "utf8").toString("hex"),
+  "length:",
+  ref.length
+);
+
+const debugToken = await pool.query(
+  `
+  SELECT
+    id,
+    tracking_token,
+    length(tracking_token) AS token_length,
+    encode(convert_to(tracking_token, 'UTF8'), 'hex') AS token_hex
+  FROM campaigns
+  WHERE id = '41194ebc-0ed4-42f5-84e6-6cbe48086e76'
+  LIMIT 1
+  `
+);
+
+console.log("TRACK DEBUG stored token:", debugToken.rows);
 const debugCampaigns = await pool.query(
   `
   SELECT id, tracking_token, status
