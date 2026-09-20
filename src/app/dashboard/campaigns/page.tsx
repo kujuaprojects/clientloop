@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Badge from "@/components/badge";
 import { listCampaigns } from "@/lib/queries";
 import { usd, fmt } from "@/lib/utils";
@@ -15,7 +16,12 @@ export default async function CampaignsPage() {
             <th className="px-6 py-3.5 font-medium">Campaign</th><th className="px-6 py-3.5 font-medium">Status</th><th className="px-6 py-3.5 text-right font-medium">Spend</th><th className="px-6 py-3.5 text-right font-medium">Visits</th><th className="px-6 py-3.5 text-right font-medium">Leads</th><th className="px-6 py-3.5 text-right font-medium">Calls</th><th className="px-6 py-3.5 text-right font-medium">Clients</th><th className="px-6 py-3.5 text-right font-medium">Revenue</th><th className="px-6 py-3.5 text-right font-medium">CAC</th><th className="px-6 py-3.5 text-right font-medium">ROAS</th>
           </tr></thead>
           <tbody>{campaigns.map((c) => <tr key={c.id} className="border-t border-zinc-100 hover:bg-zinc-50/60">
-            <td className="px-6 py-4"><p className="font-medium text-zinc-900">{c.title}</p><p className="text-xs text-zinc-400">r/{c.subreddit} · {c.style}</p></td>
+                      <td className="px-6 py-4"><Link
+  href={`/dashboard/campaigns/${c.id}`}
+  className="font-medium text-zinc-900 hover:text-brand-700"
+>
+  {c.title}
+</Link><p className="text-xs text-zinc-400">r/{c.subreddit} · {c.style}</p></td>
             <td className="px-6 py-4"><Badge status={c.status} /></td>
             <td className="px-6 py-4 text-right tabular-nums">
   {usd(c.status === "prepared" ? 0 : c.spend)}
