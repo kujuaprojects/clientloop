@@ -17,7 +17,12 @@ export async function POST(req: NextRequest) {
   console.log("TRACK DEBUG ref:", JSON.stringify(ref));
 
 const { rows } = await pool.query(
-  "SELECT id FROM campaigns WHERE tracking_token = $1 LIMIT 1",
+  `
+  SELECT id
+  FROM campaigns
+  WHERE convert_to(tracking_token, 'UTF8') = convert_to($1::text, 'UTF8')
+  LIMIT 1
+  `,
   [ref]
 );
 
