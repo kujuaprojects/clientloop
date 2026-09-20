@@ -43,16 +43,23 @@ const debugToken = await pool.query(
 );
 
 console.log("TRACK DEBUG stored token:", debugToken.rows);
-const debugCampaigns = await pool.query(
+
+const debugCompare = await pool.query(
   `
-  SELECT id, tracking_token, status
+  SELECT
+    id,
+    tracking_token,
+    tracking_token = $1::text AS exact_match,
+    length($1::text) AS incoming_length,
+    encode(convert_to($1::text, 'UTF8'), 'hex') AS incoming_hex
   FROM campaigns
-  ORDER BY created_at DESC
-  LIMIT 5
-  `
+  WHERE id = '41194ebc-0ed4-42f5-84e6-6cbe48086e76'
+  LIMIT 1
+  `,
+  [ref]
 );
 
-console.log("TRACK DEBUG recent campaigns:", debugCampaigns.rows);
+console.log("TRACK DEBUG comparison:", debugCompare.rows);
   if (!rows.length) return NextResponse.json({ error: "Unknown campaign" }, { status: 404 });
 
   const externalId = body.externalId ? String(body.externalId) : null;
