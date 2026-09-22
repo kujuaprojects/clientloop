@@ -1,3 +1,4 @@
+import ApproveCampaignButton from "@/components/approve-campaign-button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import pool from "@/lib/db";
@@ -91,7 +92,13 @@ export default async function CampaignDetailPage({
           </p>
         </div>
 
-        <Badge status={campaign.status} />
+        <div className="flex flex-col items-end gap-3">
+  <Badge status={campaign.status} />
+
+  {campaign.status === "prepared" ? (
+    <ApproveCampaignButton campaignId={campaign.id} />
+  ) : null}
+</div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
