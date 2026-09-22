@@ -78,11 +78,38 @@ export async function postJob(job: SproutGigJob & { test?: boolean }) {
   }
 
   const res = await fetch(`${BASE}/jobs/post-job.php`, {
-    method: "POST",
-    headers: headers(),
-    body: JSON.stringify(body),
-  });
-  const json = await res.json();
-  if (!json?.ok) throw new Error(json?.message || "SproutGigs rejected the job");
-  return { ...json, job_id: extractJobId(json.url) };
+  method: "POST",
+  headers: headers(),
+  body: JSON.stringify(body),
+});
+
+const raw = await res.text();
+
+if (!raw.trim()) {
+  throw new Error(
+    `SproutGigs returned an empty response (${res.status} ${res.statusText})`
+  );
+}
+
+let json: any;
+
+try {
+  json = JSON.parse(raw);
+} catch {
+  throw new Error(
+    `SproutGigs returned a non-JSON response (${res.status} ${res.statusText})`
+  );
+}
+
+if (!res.ok || !json?.ok) {
+  throw new Error(
+    json?.message ||
+      `SproutGigs rejected the job (${res.status} ${res.statusText})`
+  );
+}
+
+return {
+  ...json,
+  job_id: json.job_id || extractJobId(json.url),
+};
 }
