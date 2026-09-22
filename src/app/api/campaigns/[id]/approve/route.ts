@@ -48,17 +48,31 @@ if (!liveSubmissionEnabled) {
     );
   }
 
-  const campaign = rows[0];
+ const campaign = rows[0];
 
-  if (campaign.status !== "prepared") {
-    return NextResponse.json(
-      { error: "Only prepared campaigns can be submitted" },
-      { status: 409 }
-    );
-  }
+const claim = await pool.query(
+  `
+  UPDATE campaigns
+  SET status = 'submitting'
+  WHERE id = $1
+    AND status = 'prepared'
+  RETURNING id
+  `,
+  [id]
+);
 
-  const appUrl = process.env.APP_URL || req.nextUrl.origin;
-  const trackedUrl = `${appUrl.replace(/\/$/, "")}/r/${campaign.tracking_token}`;
+if (!claim.rows.length) {
+  return NextResponse.json(
+    {
+      error:
+        "Campaign is no longer available for submission. It may already be submitting or submitted.",
+    },
+    { status: 409 }
+  );
+}
+
+const appUrl = process.env.APP_URL || req.nextUrl.origin;
+const trackedUrl = `${appUrl.replace(/\/$/, "")}/r/${campaign.tracking_token}`;
 
   try {
     const job = await postJob({
@@ -76,37 +90,40 @@ if (!liveSubmissionEnabled) {
     const sgJobId = job?.job_id ?? null;
 
     if (!sgJobId) {
-      return NextResponse.json(
-        { error: "SproutGigs did not return a job ID" },
-        { status: 502 }
-      );
-    }
+  await pool.query(
+    `
+    UPDATE campaigns
+    SET status = 'prepared'
+    WHERE id = $1
+      AND status = 'submitting'
+    `,
+    [id]
+  );
 
-    await pool.query(
-      `
-      UPDATE campaigns
-      SET
-        sg_job_id = $1,
-        status = 'pending_review'
-      WHERE id = $2
-      `,
-      [sgJobId, id]
-    );
+  return NextResponse.json(
+    { error: "SproutGigs did not return a job ID" },
+    { status: 502 }
+  );
+}
 
-    return NextResponse.json({
-      ok: true,
-      campaignId: id,
-      sgJobId,
-      status: "pending_review",
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      {
-        error:
-          error?.message ||
-          "Could not submit campaign to SproutGigs",
-      },
-      { status: 500 }
-    );
-  }
+    } catch (error: any) {
+  await pool.query(
+    `
+    UPDATE campaigns
+    SET status = 'prepared'
+    WHERE id = $1
+      AND status = 'submitting'
+    `,
+    [id]
+  );
+
+  return NextResponse.json(
+    {
+      error:
+        error?.message ||
+        "Could not submit campaign to SproutGigs",
+    },
+    { status: 500 }
+  );
+}
 }
